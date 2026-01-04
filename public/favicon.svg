@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <style>
+      .cross { fill: #10b981; stroke: #059669; stroke-width: 1; }
+    </style>
+  </defs>
+  <!-- Medical Cross -->
+  <rect x="14" y="8" width="4" height="16" class="cross" rx="1"/>
+  <rect x="8" y="14" width="16" height="4" class="cross" rx="1"/>
+</svg>

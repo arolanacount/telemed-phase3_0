@@ -1,0 +1,204 @@
+schemaname,tablename,policyname,permissive,roles,cmd,using_condition,check_condition
+public,allergies,Clinicians can insert allergies,PERMISSIVE,{authenticated},INSERT,null,"((created_by = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM patients
+  WHERE ((patients.id = allergies.patient_id) AND (patients.clinician_id = auth.uid())))))"
+public,allergies,Clinicians can update allergies,PERMISSIVE,{authenticated},UPDATE,"(EXISTS ( SELECT 1
+   FROM patients
+  WHERE ((patients.id = allergies.patient_id) AND ((patients.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares
+          WHERE ((patient_shares.patient_id = patients.id) AND (patient_shares.shared_with = auth.uid()))))))))",null
+public,appointments,Clinicians can insert appointments,PERMISSIVE,{authenticated},INSERT,null,((created_by = auth.uid()) OR (clinician_id = auth.uid()))
+public,appointments,Clinicians can update appointments,PERMISSIVE,{authenticated},UPDATE,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = appointments.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level]))))) OR (clinician_id = auth.uid()))",null
+public,appointments,Clinicians can update own appointments,PERMISSIVE,{authenticated},UPDATE,(clinician_id = auth.uid()),(clinician_id = auth.uid())
+public,appointments,Clinicians can view appointments,PERMISSIVE,{authenticated},SELECT,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = appointments.patient_id) AND (ps.shared_with = auth.uid())))) OR (clinician_id = auth.uid()))",null
+public,appointments,Clinicians can view appointments for their patients,PERMISSIVE,{authenticated},SELECT,"((clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM patients
+  WHERE ((patients.id = appointments.patient_id) AND ((patients.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = patients.id) AND (ps.shared_with = auth.uid()) AND ((ps.expires_at IS NULL) OR (ps.expires_at > now()))))))))))",null
+public,clinicians,Clinicians can read own profile,PERMISSIVE,{authenticated},SELECT,(id = ( SELECT auth.uid() AS uid)),null
+public,clinicians,Clinicians can update own profile,PERMISSIVE,{authenticated},UPDATE,(id = ( SELECT auth.uid() AS uid)),(id = ( SELECT auth.uid() AS uid))
+public,clinicians,Clinicians insert,PERMISSIVE,{authenticated},INSERT,null,(id = ( SELECT auth.uid() AS uid))
+public,labs_ordered,Clinicians can create labs_ordered,PERMISSIVE,{authenticated},INSERT,null,(auth.uid() IS NOT NULL)
+public,labs_ordered,Clinicians can insert labs_ordered,PERMISSIVE,{authenticated},INSERT,null,((created_by = auth.uid()) OR (clinician_id = auth.uid()))
+public,labs_ordered,Clinicians can update labs_ordered,PERMISSIVE,{authenticated},UPDATE,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = labs_ordered.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level]))))) OR (clinician_id = auth.uid()))",null
+public,labs_ordered,Clinicians can view labs_ordered,PERMISSIVE,{authenticated},SELECT,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = labs_ordered.patient_id) AND (ps.shared_with = auth.uid())))) OR (clinician_id = auth.uid()))",null
+public,medical_history,Clinicians can create medical history,PERMISSIVE,{authenticated},INSERT,null,(auth.uid() IS NOT NULL)
+public,medical_history,Clinicians can insert medical_history,PERMISSIVE,{authenticated},INSERT,null,"((created_by = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM patients
+  WHERE ((patients.id = medical_history.patient_id) AND (patients.clinician_id = auth.uid())))))"
+public,medical_history,Clinicians can update medical history,PERMISSIVE,{authenticated},UPDATE,"(EXISTS ( SELECT 1
+   FROM patients
+  WHERE ((patients.id = medical_history.patient_id) AND ((patients.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares
+          WHERE ((patient_shares.patient_id = patients.id) AND (patient_shares.shared_with = auth.uid()) AND (patient_shares.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level])))))))))",null
+public,medical_history,Clinicians can update medical_history,PERMISSIVE,{authenticated},UPDATE,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = medical_history.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level]))))) OR (EXISTS ( SELECT 1
+   FROM patients p
+  WHERE ((p.id = medical_history.patient_id) AND (p.clinician_id = auth.uid())))))",null
+public,medical_history,Clinicians can view medical history,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM patients
+  WHERE ((patients.id = medical_history.patient_id) AND ((patients.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares
+          WHERE ((patient_shares.patient_id = patients.id) AND (patient_shares.shared_with = auth.uid()))))))))",null
+public,medical_history,Clinicians can view medical_history,PERMISSIVE,{authenticated},SELECT,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = medical_history.patient_id) AND (ps.shared_with = auth.uid())))) OR (EXISTS ( SELECT 1
+   FROM patients p
+  WHERE ((p.id = medical_history.patient_id) AND (p.clinician_id = auth.uid())))))",null
+public,medications,Clinicians can create medications,PERMISSIVE,{authenticated},INSERT,null,(auth.uid() IS NOT NULL)
+public,medications,Clinicians can insert medications,PERMISSIVE,{authenticated},INSERT,null,"((created_by = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM patients
+  WHERE ((patients.id = medications.patient_id) AND (patients.clinician_id = auth.uid())))))"
+public,medications,Clinicians can update medications,PERMISSIVE,{authenticated},UPDATE,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = medications.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level]))))) OR (EXISTS ( SELECT 1
+   FROM patients p
+  WHERE ((p.id = medications.patient_id) AND (p.clinician_id = auth.uid())))))",null
+public,medications,Clinicians can view medications,PERMISSIVE,{authenticated},SELECT,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = medications.patient_id) AND (ps.shared_with = auth.uid())))) OR (EXISTS ( SELECT 1
+   FROM patients p
+  WHERE ((p.id = medications.patient_id) AND (p.clinician_id = auth.uid())))))",null
+public,medications_prescribed,Clinicians can create medications_prescribed,PERMISSIVE,{authenticated},INSERT,null,(auth.uid() IS NOT NULL)
+public,medications_prescribed,Clinicians can insert medications_prescribed,PERMISSIVE,{authenticated},INSERT,null,((created_by = auth.uid()) OR (clinician_id = auth.uid()))
+public,medications_prescribed,Clinicians can update medications_prescribed,PERMISSIVE,{authenticated},UPDATE,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = medications_prescribed.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level]))))) OR (clinician_id = auth.uid()))",null
+public,medications_prescribed,Clinicians can view medications_prescribed,PERMISSIVE,{authenticated},SELECT,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = medications_prescribed.patient_id) AND (ps.shared_with = auth.uid())))) OR (clinician_id = auth.uid()))",null
+public,message_threads,Clinicians can create message threads,PERMISSIVE,{authenticated},INSERT,null,(auth.uid() IS NOT NULL)
+public,message_threads,Clinicians can delete message threads,PERMISSIVE,{authenticated},DELETE,(auth.uid() = ANY (participants)),null
+public,message_threads,Clinicians can insert message_threads,PERMISSIVE,{authenticated},INSERT,null,(EXISTS ( SELECT 1))
+public,message_threads,Clinicians can update message threads,PERMISSIVE,{authenticated},UPDATE,(auth.uid() = ANY (participants)),null
+public,message_threads,Clinicians can view message threads,PERMISSIVE,{authenticated},SELECT,(auth.uid() = ANY (participants)),null
+public,messages,Clinicians can create messages,PERMISSIVE,{authenticated},INSERT,null,(sender_id = auth.uid())
+public,messages,Clinicians can insert messages,PERMISSIVE,{authenticated},INSERT,null,(sender_id = auth.uid())
+public,messages,Clinicians can view messages,PERMISSIVE,{authenticated},SELECT,((sender_id = auth.uid()) OR (recipient_id = auth.uid())),null
+public,orders,Clinicians can create orders,PERMISSIVE,{authenticated},INSERT,null,(auth.uid() IS NOT NULL)
+public,orders,Clinicians can insert orders,PERMISSIVE,{authenticated},INSERT,null,((created_by = auth.uid()) OR (clinician_id = auth.uid()))
+public,orders,Clinicians can update orders,PERMISSIVE,{authenticated},UPDATE,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = orders.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level]))))) OR (clinician_id = auth.uid()))",null
+public,orders,Clinicians can view orders,PERMISSIVE,{authenticated},SELECT,"((EXISTS ( SELECT 1
+   FROM patient_shares ps
+  WHERE ((ps.patient_id = orders.patient_id) AND (ps.shared_with = auth.uid())))) OR (clinician_id = auth.uid()))",null
+public,patient_shares,Clinicians can insert patient_shares,PERMISSIVE,{authenticated},INSERT,null,(shared_by = auth.uid())
+public,patient_shares,Patient_shares insert,PERMISSIVE,{authenticated},INSERT,null,((shared_by = ( SELECT auth.uid() AS uid)) OR (shared_with = ( SELECT auth.uid() AS uid)))
+public,patient_shares,Patient_shares select,PERMISSIVE,{authenticated},SELECT,((shared_with = ( SELECT auth.uid() AS uid)) OR (shared_by = ( SELECT auth.uid() AS uid))),null
+public,patient_shares,Patient_shares_delete,PERMISSIVE,{authenticated},DELETE,((shared_by = ( SELECT auth.uid() AS uid)) OR (shared_with = ( SELECT auth.uid() AS uid))),null
+public,patient_shares,Patient_shares_update,PERMISSIVE,{authenticated},UPDATE,((shared_by = ( SELECT auth.uid() AS uid)) OR (shared_with = ( SELECT auth.uid() AS uid))),((shared_by = ( SELECT auth.uid() AS uid)) OR (shared_with = ( SELECT auth.uid() AS uid)))
+public,patients,Clinicians can insert patients,PERMISSIVE,{authenticated},INSERT,null,((created_by = auth.uid()) OR (clinician_id = auth.uid()))
+public,patients,Clinicians can update their own patients,PERMISSIVE,{authenticated},UPDATE,"((clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM patient_shares
+  WHERE ((patient_shares.patient_id = patients.id) AND (patient_shares.shared_with = auth.uid()) AND (patient_shares.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level])) AND ((patient_shares.expires_at IS NULL) OR (patient_shares.expires_at > now()))))))","((clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM patient_shares
+  WHERE ((patient_shares.patient_id = patients.id) AND (patient_shares.shared_with = auth.uid()) AND (patient_shares.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level])) AND ((patient_shares.expires_at IS NULL) OR (patient_shares.expires_at > now()))))))"
+public,patients,Clinicians can view their own patients,PERMISSIVE,{authenticated},SELECT,"((clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM patient_shares
+  WHERE ((patient_shares.patient_id = patients.id) AND (patient_shares.shared_with = auth.uid()) AND ((patient_shares.expires_at IS NULL) OR (patient_shares.expires_at > now()))))))",null
+public,transcription_jobs,Clinicians can create transcription jobs,PERMISSIVE,{authenticated},INSERT,null,(auth.uid() IS NOT NULL)
+public,transcription_jobs,Clinicians can insert transcription_jobs,PERMISSIVE,{authenticated},INSERT,null,(created_by = auth.uid())
+public,transcription_jobs,Clinicians can update transcription jobs,PERMISSIVE,{authenticated},UPDATE,(created_by = auth.uid()),null
+public,transcription_jobs,Clinicians can update transcription_jobs,PERMISSIVE,{authenticated},UPDATE,"(EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = transcription_jobs.visit_id) AND ((v.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = v.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level])))))))))",null
+public,transcription_jobs,Clinicians can view transcription jobs,PERMISSIVE,{authenticated},SELECT,"((created_by = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM visits
+  WHERE ((visits.id = transcription_jobs.visit_id) AND ((visits.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patients
+          WHERE ((patients.id = visits.patient_id) AND ((patients.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+                   FROM patient_shares
+                  WHERE ((patient_shares.patient_id = patients.id) AND (patient_shares.shared_with = auth.uid())))))))))))))",null
+public,transcription_jobs,Clinicians can view transcription_jobs,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = transcription_jobs.visit_id) AND ((v.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = v.patient_id) AND (ps.shared_with = auth.uid()))))))))",null
+public,visit_notes,Clinicians can insert visit_notes,PERMISSIVE,{authenticated},INSERT,null,(created_by = auth.uid())
+public,visit_notes,Clinicians can update visit_notes,PERMISSIVE,{authenticated},UPDATE,"(EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = visit_notes.visit_id) AND ((v.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = v.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level])))))))))",null
+public,visit_notes,Clinicians can view visit_notes,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = visit_notes.visit_id) AND ((v.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = v.patient_id) AND (ps.shared_with = auth.uid()))))))))",null
+public,visit_notes,Visit_notes delete,PERMISSIVE,{authenticated},DELETE,"(EXISTS ( SELECT 1
+   FROM (visits v
+     JOIN patients p ON ((p.id = v.patient_id)))
+  WHERE ((v.id = visit_notes.visit_id) AND ((v.clinician_id = ( SELECT auth.uid() AS uid)) OR (p.clinician_id = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = p.id) AND (ps.shared_with = ( SELECT auth.uid() AS uid)))))))))",null
+public,visit_notes,Visit_notes insert,PERMISSIVE,{authenticated},INSERT,null,"((created_by = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = visit_notes.visit_id) AND (v.clinician_id = ( SELECT auth.uid() AS uid))))))"
+public,visit_notes,Visit_notes select,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM (visits v
+     JOIN patients p ON ((p.id = v.patient_id)))
+  WHERE ((v.id = visit_notes.visit_id) AND ((v.clinician_id = ( SELECT auth.uid() AS uid)) OR (p.clinician_id = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = p.id) AND (ps.shared_with = ( SELECT auth.uid() AS uid)))))))))",null
+public,visit_notes,Visit_notes update,PERMISSIVE,{authenticated},UPDATE,"(EXISTS ( SELECT 1
+   FROM (visits v
+     JOIN patients p ON ((p.id = v.patient_id)))
+  WHERE ((v.id = visit_notes.visit_id) AND ((v.clinician_id = ( SELECT auth.uid() AS uid)) OR (p.clinician_id = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = p.id) AND (ps.shared_with = ( SELECT auth.uid() AS uid)))))))))","((created_by = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = visit_notes.visit_id) AND (v.clinician_id = ( SELECT auth.uid() AS uid))))))"
+public,visit_recordings,Clinicians can insert visit_recordings,PERMISSIVE,{authenticated},INSERT,null,(uploaded_by = auth.uid())
+public,visit_recordings,Clinicians can update visit_recordings,PERMISSIVE,{authenticated},UPDATE,"(EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = visit_recordings.visit_id) AND ((v.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = v.patient_id) AND (ps.shared_with = auth.uid()) AND (ps.permission_level = ANY (ARRAY['write'::permission_level, 'full'::permission_level])))))))))",null
+public,visit_recordings,Clinicians can view visit_recordings,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = visit_recordings.visit_id) AND ((v.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = v.patient_id) AND (ps.shared_with = auth.uid()))))))))",null
+public,visit_recordings,Visit_recordings delete,PERMISSIVE,{authenticated},DELETE,"((uploaded_by = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+   FROM (visits v
+     JOIN patients p ON ((p.id = v.patient_id)))
+  WHERE ((v.id = visit_recordings.visit_id) AND ((v.clinician_id = ( SELECT auth.uid() AS uid)) OR (p.clinician_id = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = p.id) AND (ps.shared_with = ( SELECT auth.uid() AS uid))))))))))",null
+public,visit_recordings,Visit_recordings insert,PERMISSIVE,{authenticated},INSERT,null,"((uploaded_by = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = visit_recordings.visit_id) AND (v.clinician_id = ( SELECT auth.uid() AS uid))))))"
+public,visit_recordings,Visit_recordings select,PERMISSIVE,{authenticated},SELECT,"(EXISTS ( SELECT 1
+   FROM (visits v
+     JOIN patients p ON ((p.id = v.patient_id)))
+  WHERE ((v.id = visit_recordings.visit_id) AND ((v.clinician_id = ( SELECT auth.uid() AS uid)) OR (p.clinician_id = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = p.id) AND (ps.shared_with = ( SELECT auth.uid() AS uid)))))))))",null
+public,visit_recordings,Visit_recordings update,PERMISSIVE,{authenticated},UPDATE,"((uploaded_by = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+   FROM (visits v
+     JOIN patients p ON ((p.id = v.patient_id)))
+  WHERE ((v.id = visit_recordings.visit_id) AND ((v.clinician_id = ( SELECT auth.uid() AS uid)) OR (p.clinician_id = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = p.id) AND (ps.shared_with = ( SELECT auth.uid() AS uid))))))))))","((uploaded_by = ( SELECT auth.uid() AS uid)) OR (EXISTS ( SELECT 1
+   FROM visits v
+  WHERE ((v.id = visit_recordings.visit_id) AND (v.clinician_id = ( SELECT auth.uid() AS uid))))))"
+public,visits,Clinicians can insert visits,PERMISSIVE,{authenticated},INSERT,null,((created_by = auth.uid()) OR (clinician_id = auth.uid()))
+public,visits,Clinicians can update visits,PERMISSIVE,{authenticated},UPDATE,((clinician_id = auth.uid()) OR (created_by = auth.uid()) OR (last_edited_by = auth.uid())),((clinician_id = auth.uid()) OR (created_by = auth.uid()))
+public,visits,Clinicians can view accessible visits,PERMISSIVE,{authenticated},SELECT,"((clinician_id = auth.uid()) OR (created_by = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM patients
+  WHERE ((patients.id = visits.patient_id) AND ((patients.clinician_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM patient_shares ps
+          WHERE ((ps.patient_id = patients.id) AND (ps.shared_with = auth.uid()) AND ((ps.expires_at IS NULL) OR (ps.expires_at > now()))))))))))",null
