@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "@types/react-calendar": "^3.9.0",
-    "dotenv": "^17.2.3",
-    "supabase": "^2.70.5"
+    "dotenv": "^17.2.3"
   }
 }
