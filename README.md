@@ -59,9 +59,7 @@ cp .env.example .env.local
 ```bash
 npm install
 npm run dev
-# OR (experimental) run Next with Turbopack developer server:
-# - Faster incremental rebuilds in many projects
-npm run dev:turbo
+
 ```
 
 3. Open the app at: http://localhost:3000
@@ -120,15 +118,6 @@ VERCEL_PROJECT_ID=your_vercel_project_id
 
 
 
-### Using Turbopack (experimental) ⚡
-
-- Run with: `npm run dev:turbo` (this runs `next dev --turbo`).
-- Notes:
-  - Turbopack is an experimental, Rust-based bundler/development server designed for faster dev builds and HMR.
-  - Some features or Next.js plugins may not be fully supported; if you hit issues, switch back to the standard dev server with `npm run dev`.
-  - Test key flows (file uploads, CSS/Tailwind, and server-side behavior) after enabling Turbopack to ensure nothing is broken.
-
----
 
 ---
 
