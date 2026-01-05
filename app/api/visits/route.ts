@@ -90,16 +90,19 @@ export async function POST(request: NextRequest) {
     }
     const body = await request.json()
 
-    // Extract note_format separately as it may not exist in schema yet
+    // Extract note_format (persist it when provided)
     const { note_format, ...visitData } = body
+
+    const insertPayload = {
+      ...visitData,
+      ...(note_format ? { note_format } : {}),
+      clinician_id: user.id,
+      created_by: user.id
+    }
 
     const { data, error } = await supabase
       .from('visits')
-      .insert({
-        ...visitData,
-        clinician_id: user.id,
-        created_by: user.id
-      })
+      .insert(insertPayload)
       .select()
       .single()
 

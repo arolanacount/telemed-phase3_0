@@ -1,0 +1,127 @@
+{
+  "timestamp": "2026-01-04T15:03:03.703Z",
+  "total_references": 30,
+  "missing_count": 0,
+  "results": [
+    {
+      "path": "app/signup/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/signin/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "lib/auth.ts",
+      "exists": true
+    },
+    {
+      "path": "app/api/ensure-clinician/",
+      "exists": true
+    },
+    {
+      "path": "app/patients/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/patients/PatientList.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/patients/[id]/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/patients/[id]/PatientTabs.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/patients/[id]/PatientShare.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/api/patients/[id]/shares/route.ts",
+      "exists": true
+    },
+    {
+      "path": "app/api/patients/[id]/share/route.ts",
+      "exists": true
+    },
+    {
+      "path": "app/visits/new/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/api/visits/route.ts",
+      "exists": true
+    },
+    {
+      "path": "app/visits/[id]/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/appointments/new/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/api/appointments/route.ts",
+      "exists": true
+    },
+    {
+      "path": "app/calendar/CalendarClient.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/dashboard/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/dashboard/DashboardClient.tsx",
+      "exists": true
+    },
+    {
+      "path": "app/search/page.tsx",
+      "exists": true
+    },
+    {
+      "path": "lib/useSessionTimeout.ts",
+      "exists": true
+    },
+    {
+      "path": "components/Layout.tsx",
+      "exists": true
+    },
+    {
+      "path": "main_docs/reference_docs/transcription-and-summarization.md",
+      "exists": true
+    },
+    {
+      "path": "main_docs/IMPLEMENTATION_PLAN.md",
+      "exists": true
+    },
+    {
+      "path": "main_docs/AI_Code_Changes_Reference.md",
+      "exists": true
+    },
+    {
+      "path": "main_docs/Functional_Code_Locations.md",
+      "exists": true
+    },
+    {
+      "path": "main_docs/reference_docs/TECH_STACK.md",
+      "exists": true
+    },
+    {
+      "path": "main_docs/reference_docs/HIPAA_COMPLIANCE.md",
+      "exists": true
+    },
+    {
+      "path": "app/api/ensure-clinician",
+      "exists": true
+    },
+    {
+      "path": "scripts/verify_code_index.js",
+      "exists": true
+    }
+  ]
+}

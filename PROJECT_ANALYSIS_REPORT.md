@@ -313,20 +313,20 @@
 
 ---
 
-### Phase 8: AI-Powered Note Generation ⚠️ NOT STARTED
+### Phase 8: AI-Powered Note Generation ⚠️ PARTIAL
 
 **Tasks:**
-- [ ] Create `POST /api/visits/[id]/generate-note` endpoint
-- [ ] Accept transcript text
-- [ ] Send to LLM (DeepSeek/OpenAI GPT-4) with structured prompt
-- [ ] Use DeepSeek parsing prompt (strict JSON schema) from reference docs
-- [ ] Parse LLM response into note sections (Chief Complaint, HPI, ROS, Assessment, Plan)
-- [ ] Update visit note fields in database
-- [ ] Mark note as "Pending Review" after generation
-- [ ] Display AI-generated content in forms with subtle indicators
-- [ ] Allow clinician to edit all fields
-- [ ] Add "Regenerate" option if unsatisfactory
-- [ ] Preserve original transcript
+- [x] Create `POST /api/visits/[id]/generate-note` endpoint (placeholder implementation)
+- [ ] Accept transcript text (TODO)
+- [ ] Send to LLM (DeepSeek/OpenAI GPT-4) with structured prompt (TODO)
+- [ ] Use DeepSeek parsing prompt (strict JSON schema) from reference docs (TODO)
+- [ ] Parse LLM response into note sections (Chief Complaint, HPI, ROS, Assessment, Plan) (TODO)
+- [ ] Update visit note fields in database (partially implemented via placeholder)
+- [ ] Mark note as "Pending Review" after generation (TODO)
+- [ ] Display AI-generated content in forms with subtle indicators (TODO)
+- [x] Allow clinician to edit all fields (UI in place)
+- [x] Add "Regenerate" option with undo/backup (client-side backup, no LLM call) ✅
+- [ ] Preserve original transcript (TODO)
 
 **Implementation Notes:**
 - Use DeepSeek parsing prompt (strict JSON schema, `response_format: "json"`, temperature: 0.2)

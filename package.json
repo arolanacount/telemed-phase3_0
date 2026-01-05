@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "smoke:visits": "node ./scripts/smoke_visit_endpoints.js"
   },
   "dependencies": {
     "@supabase/ssr": "^0.8.0",
@@ -26,7 +27,8 @@
     "react-calendar": "^6.0.0",
     "react-dom": "^19.2.3",
     "tailwindcss": "^4.1.18",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/react-calendar": "^3.9.0",

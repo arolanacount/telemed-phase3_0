@@ -8,6 +8,15 @@ This document outlines the phased approach to building a complete telehealth pla
 
 **🚨 CRITICAL AI DIRECTIVE**: When implementing new features or modifying existing code, AI assistants MUST first consult `AI_Code_Changes_Reference.md` for documented issues, solutions, and best practices to avoid recurring problems and ensure consistency.
 
+**📋 New: CODE INDEX & Verification** — A machine-readable index (`main_docs/CODE_INDEX.md`) lists core feature → file mappings and a searchable table for quick navigation. A verification script (`scripts/verify_code_index.js`) validates that every referenced path in `main_docs/CODE_INDEX.md` exists and writes a report to `tmp/verify_code_index_report.json`.
+
+**AI/Developer Responsibilities regarding the CODE INDEX:**
+- **Always** consult `main_docs/CODE_INDEX.md` before implementing or claiming feature completion. Update `main_docs/CODE_INDEX.md` when adding, moving, or removing files.
+- **Run** `node scripts/verify_code_index.js` after updating the index to ensure all references are valid. Address any missing files and re-run verification.
+- **Document** changes to the index in relevant PR descriptions and in `main_docs/IMPLEMENTATION_PLAN.md` under the appropriate Phase.
+
+**Note:** This verification step helps prevent documentation rot and enables automated checks (CI, pre-PR bots, or AI assistants) to programmatically confirm file-level coverage.
+
 ## Development Guidelines
 
 ### AI Code Changes Reference
@@ -346,96 +355,100 @@ This document outlines the phased approach to building a complete telehealth pla
 
 ---
 
-## Phase 4: Visit Management & Note Structure ✅ FULLY IMPLEMENTED
+## Phase 4: Visit Management & Note Structure ⚠️ PENDING
 **Estimated Time**: 1 AI session
 **Goal**: Implement visit workflow without recording
-**Status**: Completed with comprehensive visit management and structured note-taking interface
+**Status**: Pending — UI components exist but several functional verifications, persistence tests, and end-to-end QA are required before marking this phase complete.
 
 **🚨 CRITICAL AI DIRECTIVE**: When making any code changes, implementations, or modifications to this codebase, AI assistants **MUST** first reference and follow the guidelines in `main_docs/AI_Code_Changes_Reference.md`. This document contains critical information about known issues, solutions, and design principles that must be adhered to prevent recurring problems and ensure consistency across the application.
 
 **📱 CRITICAL MOBILE RESPONSIVENESS DIRECTIVE**: All pages and components **MUST** prioritize vertical stacking and proper alignment in mobile/portrait mode. Use responsive classes like `grid-cols-1 md:grid-cols-2`, `flex-col sm:flex-row`, and `text-sm sm:text-base` to ensure proper mobile experience. Always test implementations in portrait/mobile view to verify proper stacking and alignment.
 
 ### Tasks ✅
-1. **Visit Creation** ✅
-   - ✅ "New Visit" page with patient selection ✅ (already existed)
-   - ✅ Visit type selection (telehealth video/audio, in-person, home) ✅ (already existed)
-   - ✅ Location field and chief complaint capture ✅ (already existed)
-   - ✅ Visit record creation in database ✅ (already existed)
-   - ✅ Patient profile visit history tab with real data fetching ✅ (newly implemented)
+1. **Visit Creation** ⚠️ PENDING
+   - ⚠️ PENDING "New Visit" page with patient selection (requires verification)
+   - ⚠️ PENDING Visit type selection (telehealth video/audio, in-person, home) (requires verification)
+   - ⚠️ PENDING Location field and chief complaint capture (requires verification)
+   - ⚠️ PENDING Visit record creation in database (requires persistence verification)
+   - ⚠️ PENDING Patient profile visit history tab with real data fetching (requires QA)
 
-2. **Visit Detail Page** (`/visits/[id]`) ✅
-   - ✅ Comprehensive visit overview with patient information
-   - ✅ Visit metadata display (type, status, timing, location)
-- ✅ **Responsive interface**: Tabbed on desktop, collapsible accordion on mobile/portrait
-- ✅ Desktop tabs: Overview, Chief Complaint, HPI, ROS, Vitals, Physical Exam, Assessment, Plan
-- ✅ Mobile accordion: Expandable sections with chevron indicators
+2. **Visit Detail Page** (`/visits/[id]`) ⚠️ PENDING
+   - ⚠️ PENDING Comprehensive visit overview with patient information (requires verification)
+   - ⚠️ PENDING Visit metadata display (type, status, timing, location) (requires verification)
+- ⚠️ PENDING **Responsive interface**: Tabbed on desktop, collapsible accordion on mobile/portrait (needs responsive QA)
+- ⚠️ PENDING Desktop tabs: Overview, Chief Complaint, HPI, ROS, Vitals, Physical Exam, Assessment, Plan (verify content mapping)
+- ⚠️ PENDING Mobile accordion: Expandable sections with chevron indicators (verify mobile UX)
 
-3. **Visit Note Forms** ✅
-   - ✅ Chief Complaint (working with auto-save) ✅
-   - ✅ History of Present Illness (working with auto-save) ✅
-   - ✅ Assessment and Plan sections (working with auto-save) ✅
-   - ✅ "Finalize Visit" functionality ✅
-   - ✅ ROS form (ALL checkboxes connected with auto-save, additional notes working)
-   - ✅ Vitals form (all inputs connected with auto-save)
-   - ✅ Physical Exam form (ALL checkboxes connected with auto-save)
+3. **Visit Note Forms** ⚠️ PENDING
+   - ⚠️ PENDING Chief Complaint (auto-save behavior requires end-to-end verification)
+   - ⚠️ PENDING History of Present Illness (auto-save behavior requires end-to-end verification)
+   - ⚠️ PENDING Assessment and Plan sections (auto-save behavior requires verification)
+   - ⚠️ PENDING "Finalize Visit" functionality (requires audit and lock behavior verification)
+   - ⚠️ PENDING ROS form (checkboxes and persistence require verification)
+   - ⚠️ PENDING Vitals form (inputs and persistence require verification)
+   - ⚠️ PENDING Physical Exam form (checkboxes and persistence require verification)
 
-4. **Visit States** ✅
-   - ✅ Status tracking: Draft, In Progress, Pending Review, Finalized, Cancelled ✅
-   - ✅ Status display with color coding ✅
-   - ✅ Visit finalization with audit trail ✅
+4. **Visit States** ⚠️ PENDING
+   - ⚠️ PENDING Status tracking: Draft, In Progress, Pending Review, Finalized, Cancelled (verify transitions and data integrity)
+   - ⚠️ PENDING Status display with color coding (verify UI consistency)
+   - ⚠️ PENDING Visit finalization with audit trail (verify finalized lock and audit fields)
 
 5. **Multi-User Workflow** ⚠️
    - ⚠️ Basic structure in place (not fully implemented - single-user for now)
-   - ✅ Visit locking after finalization ✅
+   - ⚠️ PENDING Visit locking after finalization (needs verification for multi-user scenarios)
    - ⚠️ User tracking per section (can be added later)
 
-6. **API Routes** ✅
-   - ✅ `POST /api/visits` - Create visit ✅ (already existed)
-   - ✅ `GET /api/visits` - List visits ✅ (already existed)
-   - ✅ `GET /api/visits/[id]` - Get visit details ✅
-   - ✅ `PUT /api/visits/[id]` - Update visit ✅
-   - ✅ `POST /api/visits/[id]/finalize` - Finalize and sign note ✅
-   - ✅ `POST/PUT /api/visits/[id]/notes` - Create/update visit notes ✅
+6. **API Routes** ⚠️ PENDING
+   - ⚠️ PENDING `POST /api/visits` - Create visit (verify behavior and error handling)
+   - ⚠️ PENDING `GET /api/visits` - List visits (verify access/RLS semantics)
+   - ⚠️ PENDING `GET /api/visits/[id]` - Get visit details (verify RPC fallback and data completeness)
+   - ⚠️ PENDING `PUT /api/visits/[id]` - Update visit (verify allowed fields and audit)
+   - ⚠️ PENDING `POST /api/visits/[id]/finalize` - Finalize and sign note (verify lock and audit)
+   - ⚠️ PENDING `POST/PUT /api/visits/[id]/notes` - Create/update visit notes (verify all subcategory fields persist)
 
 ### **Current Status:**
-- ✅ **Visit Creation**: Working via `/visits/new`
-- ✅ **Visit Listing**: Working via `/visits` with "Start New Visit" and "Continue Visit" buttons
-- ✅ **Complete Note Forms**: ALL forms fully implemented with auto-save:
+- ⚠️ PENDING **Visit Creation**: UI present at `/visits/new` — requires persistence & workflow verification
+- ⚠️ PENDING **Visit Listing**: UI present at `/visits` — verify Continue/Start UX and pagination under load
+- ⚠️ PENDING **Complete Note Forms**: Forms implemented but need end-to-end auto-save and persistence verification for all fields:
   - Chief Complaint, HPI, Assessment, Plan
-  - ROS form (all checkboxes + additional notes)
-  - Vitals form (all inputs)
-  - Physical Exam form (all checkboxes + additional notes)
-- ✅ **Appointment Creation**: Fully functional via `/appointments/new` with patient access validation and correct enum values
-- ✅ **Appointment Management**: Complete appointment system with interactive calendar (`/calendar`) and list view (`/appointments`)
-- ✅ **Appointment Details**: Individual appointment pages (`/appointments/[id]`) with working status updates (Start → In Progress → Complete)
-- ✅ **Appointment Reminders**: Dashboard shows upcoming appointments with dismissible reminders
+  - ROS form (verify checkbox/persistence behavior)
+  - Vitals form (verify inputs + persistence)
+  - Physical Exam form (verify checkboxes + persistence)
+- ⚠️ PENDING **Appointment Creation**: UI exists — validate access checks and enum handling
+- ⚠️ PENDING **Appointment Management**: Calendar and list views exist — verify behavior under real data
+- ⚠️ PENDING **Appointment Details**: Verify status transitions (Start → In Progress → Complete) across workflows
+- ⚠️ PENDING **Appointment Reminders**: Dashboard reminders present — verify timing and dismissal behavior
 
-### Deliverables ✅
-- ✅ Complete visit management workflow with tabbed interface
-- ✅ Structured note-taking with auto-save functionality
-- ✅ Visit status management and finalization
-- ✅ Professional medical documentation interface
-- ✅ Interactive appointment calendar with visual indicators
-- ✅ Appointment list and detail pages with status management
-- ✅ Mobile-responsive design with proper vertical stacking
-- ✅ Standardized loading states (animated circles, no size changes)
-- ✅ RLS policy conflict resolution for appointment updates
-- ✅ Patient information integration
+### Deliverables ⚠️ PENDING
+- ⚠️ PENDING Complete visit management workflow with tabbed interface (needs full E2E verification)
+- ⚠️ PENDING Structured note-taking with auto-save functionality (verify autosave and persistence)
+- ⚠️ PENDING Visit status management and finalization (verify audit & locks)
+- ⚠️ PENDING Professional medical documentation interface (verify consistency and accessibility)
+- ⚠️ PENDING Interactive appointment calendar with visual indicators (verify edge cases)
+- ⚠️ PENDING Appointment list and detail pages with status management (verify behaviors)
+- ⚠️ PENDING Mobile-responsive design with proper vertical stacking (run mobile QA)
+- ⚠️ PENDING Standardized loading states (animated circles, no size changes)
+- ⚠️ PENDING RLS policy conflict resolution for appointment updates (verify RLS behavior in production/staging)
+- ⚠️ PENDING Patient information integration (verify referential integrity)
 
-### Acceptance Criteria ✅
-- ✅ Clinicians can create new visits from patient selection
-- ✅ Visit notes can be created and edited in structured sections
-- ✅ Draft notes auto-save as users type
-- ✅ Notes can be finalized and visits locked
-- ✅ Visit status properly tracked and displayed
-- ✅ Navigation between visits and note sections works smoothly
+### Acceptance Criteria ⚠️ PENDING
+- ⚠️ PENDING Clinicians can create new visits from patient selection (verify end-to-end with RLS)
+- ⚠️ PENDING Visit notes can be created and edited in structured sections (verify all subcategory fields persist)
+- ⚠️ PENDING Draft notes auto-save as users type (verify frequency and data integrity)
+- ⚠️ PENDING Notes can be finalized and visits locked (verify locking and audit trails)
+- ⚠️ PENDING Visit status properly tracked and displayed (verify across users and sessions)
+- ⚠️ PENDING Navigation between visits and note sections works smoothly (verify mobile/desktop behaviors)
 
-### Technical Implementation ✅
-- **Frontend**: React components with tabbed interface and auto-save
-- **Backend**: RESTful API with proper RLS policies
-- **Database**: Structured visit_notes table with all medical sections
-- **UI/UX**: Clean, professional medical documentation interface
-- **Data Integrity**: Audit trails and proper relationship management
+### Technical Implementation ⚠️ PENDING
+- **Frontend**: React components with tabbed interface and auto-save (requires verification that autosave persists all fields and handles conflicts)
+- **Backend**: RESTful API with proper RLS policies (verify RLS behavior and error paths)
+- **Database**: Structured `visit_notes` table with all medical sections (added subcategory columns and UI persistence). Verification required to ensure all subcategory fields persist correctly and are included in RPCs or API returns.
+
+  Migration added: `supabase/migrations/20260104000000_add_visit_notes_subcategories.sql` — adds columns: `data`, `behavior`, `intervention`, `response`, `goal`, `problem`, `mental_status`, `risk_assessment`, `rating_scales`, `treatment_goals`, `medications_review`, `follow_up`, `referrals`.
+
+  A smoke helper script was added at `scripts/smoke_visit_notes_persist.js` to exercise the new fields using a service role key (set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `VISIT_ID` and run the script). Manual validation in staging is recommended before deploying to production.
+- **UI/UX**: Clean, professional medical documentation interface (verify accessibility and mobile stacking)
+- **Data Integrity**: Audit trails and proper relationship management (verify audits and finalize behavior)
 
 ### Future Enhancements 🔄
 - **Multi-User Collaboration**: Real-time editing with user attribution
@@ -658,7 +671,7 @@ This document outlines the phased approach to building a complete telehealth pla
 
 ### Tasks
 1. **AI Processing Pipeline**
-   - Create `POST /api/visits/[id]/generate-note` endpoint
+   - ✅ Create `POST /api/visits/[id]/generate-note` endpoint (placeholder implementation)
    - Accept transcript text
    - Send to LLM (OpenAI GPT-4 or Claude) with structured prompt
    - Parse LLM response into note sections

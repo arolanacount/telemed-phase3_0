@@ -132,3 +132,5 @@ contingency plans for risk
 All formats support structured subcategories to improve clarity,
 compliance, billing justification, and interoperability with EHR and AI
 systems.
+
+Note: these subcategories are now persisted to the `visit_notes` table (e.g., `data`, `behavior`, `intervention`, `response`, `goal`, `mental_status`, `risk_assessment`, `rating_scales`, `treatment_goals`, `follow_up`, `referrals`) and are editable in the Visit UI so clinicians can save and retrieve structured details for each visit.

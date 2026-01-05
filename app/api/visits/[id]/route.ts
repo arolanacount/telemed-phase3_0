@@ -15,13 +15,14 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Get visit with patient info and notes
+    // Get visit with patient info and notes (include note_format and subcategory fields)
     const { data: visit, error } = await supabase
       .from('visits')
       .select(`
         id,
         patient_id,
         visit_type,
+        note_format,
         visit_status,
         started_at,
         ended_at,
@@ -45,8 +46,23 @@ export async function GET(
           assessment,
           diagnoses,
           plan,
+          data,
+          behavior,
+          intervention,
+          response,
+          goal,
+          problem,
+          mental_status,
+          risk_assessment,
+          rating_scales,
+          treatment_goals,
+          medications_review,
+          follow_up,
+          referrals,
           ai_generated,
-          ai_confidence
+          ai_confidence,
+          created_at,
+          updated_at
         )
       `)
       .eq('id', id)
