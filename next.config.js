@@ -8,6 +8,12 @@ const nextConfig = {
       },
     ],
   },
+  webpack: (config) => {
+    config.ignoreWarnings = [
+      { module: /node_modules/, message: /.*/ }
+    ];
+    return config;
+  },
 };
 
 module.exports = nextConfig;
